@@ -19,6 +19,8 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/Dashboard/ProtectedRoute";
 import Login from "./pages/Login";
 import { AuthProvider } from "./context/auth";
+import ECNmember from "./pages/ECNmember";
+import EditMemberForm from "./components/Dashboard/MemberForm/EditMemberForm";
 
 // Move useLocation inside the BrowserRouter
 function App() {
@@ -81,7 +83,7 @@ function ContentWrapper() {
     <>
       {/* Conditionally render NavBar and Footer based on the route */}
       {!isProtectedRoute && <NavBar />}
-      
+
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
@@ -94,27 +96,32 @@ function ContentWrapper() {
         <Route path="/about/aboutecn" element={<AboutECN />} />
         <Route path="/about/arkaan-e-shura" element={<ArkaaneShura />} />
         <Route path="/about/about-naseerpur" element={<AboutNaseerpur />} />
-        <Route path="/about/arkaane-shura/:profileName" element={<ProfileView profileData={profileData} />} />
+        <Route path="/about/arkaan-e-shura/:profileName" element={<ProfileView profileData={profileData} />} />
         <Route path="/login" element={<Login />} />
-      </Routes>
-
-      {!isProtectedRoute && <Footer />} {/* Render Footer conditionally */}
-
-      <Routes>
-        {/* Protected Route for Dashboard */}
+        
+        {/* Protected Routes */}
         <Route
-          path="/dashboard"
+          path="/dashboard/*"
           element={
             <ProtectedRoute>
               <Layout>
-                <Dashboard />
+                <Routes>
+                  <Route path="" element={<Dashboard />} />
+                  <Route path="upload/ecnmember" element={<ECNmember />} />
+                  <Route path="ecnmembers/edit/:id" element={<EditMemberForm />} />
+                  <Route path="*" element={<PageNotFound />} />
+                </Routes>
               </Layout>
             </ProtectedRoute>
           }
         />
-        {/* Catch-all Route */}
+
+        {/* Catch-all Route for 404 */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+
+      {/* Conditionally render Footer based on the route */}
+      {!isProtectedRoute && <Footer />}
     </>
   );
 }

@@ -1,74 +1,110 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'; // Import useState
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/auth';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/auth";
+import { FaQuran, FaBook, FaGlobe, FaUserPlus, FaImages } from "react-icons/fa"; // Importing icons
 
 const Dashboard = () => {
-  const { auth, setAuth } = useAuth();
-  const [user, setUser] = useState(null); // State to store user data
+  const { auth } = useAuth();
+  const [user, setUser] = useState(null);
 
-//   useEffect(() => {
-//     const fetchUser = async () => {
-//       try {
-//         const res = await axios.get(`${import.meta.env.VITE_APP_API}/api/v1/auth/user`, {
-//           headers: {
-//             Authorization: `Bearer ${auth.token}`
-//           }
-//         });
-//         setUser(res.data.user);
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     };
-//     fetchUser();
-//   }, [])
-
-useEffect(() => {
-
+  useEffect(() => {
     const fetchUser = async () => {
-      await axios.get(`${import.meta.env.VITE_APP_API}/api/v1/auth/user`)
-      .then(res => {
-        setUser(res.data.user)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-
-    }
-
-    fetchUser()
-})
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_APP_API}/api/v1/auth/user`,
+          {
+            headers: {
+              Authorization: `Bearer ${auth.token}`,
+            },
+          }
+        );
+        setUser(res.data.user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUser();
+  }, [auth.token]); // Adding dependency array to avoid infinite loop
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">
-        Welcome{user ? `, ${auth.user.name}` : ''} to the ECN Dashboard {/* Display user name */}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+      <h1 className="text-4xl font-extrabold text-gray-800 dark:text-white mb-12">
+        Welcome{user ? `, ${user.name}` : ""} to the ECN Dashboard{" "}
+        {/* Display user name */}
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl">
-        <Link 
-          to="/dashboard/quran"
-          className="flex items-center justify-center h-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl">
+        {/* Quran Section */}
+        <Link
+          to="/dashboard/upload/quran"
+          className="flex flex-col items-center justify-center h-56 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
         >
-          <span className="text-xl font-semibold text-gray-800 dark:text-white">
+          <FaQuran className="text-green-600 dark:text-green-400 text-5xl mb-4" />{" "}
+          {/* Icon */}
+          <span className="text-2xl font-semibold text-gray-800 dark:text-white">
             Quran
           </span>
         </Link>
 
-        <Link 
-          to="/dashboard/islamicbooks"
-          className="flex items-center justify-center h-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
+        {/* Islamic Books Section */}
+        <Link
+          to="/dashboard/upload/islamicbooks"
+          className="flex flex-col items-center justify-center h-56 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
         >
-          <span className="text-xl font-semibold text-gray-800 dark:text-white">
-            Islamic Book
+          <FaBook className="text-blue-600 dark:text-blue-400 text-5xl mb-4" />{" "}
+          {/* Icon */}
+          <span className="text-2xl font-semibold text-gray-800 dark:text-white">
+            Islamic Books
           </span>
         </Link>
 
-        <Link 
-          to="/dashboard/generalbook"
-          className="flex items-center justify-center h-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
+        {/* General Books Section */}
+        <Link
+          to="/dashboard/upload/generalbook"
+          className="flex flex-col items-center justify-center h-56 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
         >
-          <span className="text-xl font-semibold text-gray-800 dark:text-white">
-            General Book
+          <FaGlobe className="text-purple-600 dark:text-purple-400 text-5xl mb-4" />{" "}
+          {/* Icon */}
+          <span className="text-2xl font-semibold text-gray-800 dark:text-white">
+            General Books
+          </span>
+        </Link>
+
+        {/* Add new member */}
+        <Link
+          to="/dashboard/upload/ecnmember"
+          className="flex flex-col items-center justify-center h-56 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+        >
+          <FaUserPlus className="text-teal-600 dark:text-teal-400 text-5xl mb-4" />{" "}
+          {/* Updated Icon */}
+          <span className="text-2xl font-semibold text-gray-800 dark:text-white">
+            Add ECN Member
+          </span>
+        </Link>
+
+
+        {/* Add pyq */}
+        <Link
+          to="/dashboard/upload/pyq"
+          className="flex flex-col items-center justify-center h-56 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+        >
+          <FaBook className="text-blue-600 dark:text-blue-400 text-5xl mb-4" />{" "}
+          {/* Updated Icon */}
+          <span className="text-2xl font-semibold text-gray-800 dark:text-white">
+            Add PYQs
+          </span>
+        </Link>
+
+
+        {/* Add images */}
+        <Link
+          to="/dashboard/upload/images"
+          className="flex flex-col items-center justify-center h-56 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+        >
+          <FaImages className="text-teal-600 dark:text-teal-400 text-5xl mb-4" />{" "}
+          {/* Updated Icon */}
+          <span className="text-2xl font-semibold text-gray-800 dark:text-white">
+            Add Images
           </span>
         </Link>
       </div>

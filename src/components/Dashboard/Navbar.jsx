@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import Cookies from 'js-cookie';
+import { FaBars, FaTimes, FaHome, FaInfoCircle, FaEnvelope, FaSignOutAlt } from 'react-icons/fa'; // Import icons from react-icons
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +40,7 @@ const Navbar = () => {
             onClick={toggleMenu}
             aria-label="Toggle navigation"
           >
-            <i className={`fas ${isOpen ? 'fa-times' : 'fa-bars'} fa-2x`}></i>
+            {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />} {/* Toggle icons */}
           </button>
 
           {/* Nav links */}
@@ -48,43 +49,43 @@ const Navbar = () => {
               to="/dashboard"
               className={({ isActive }) =>
                 isActive
-                  ? 'text-blue-600 font-semibold'
-                  : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200'
+                  ? 'text-blue-600 font-semibold flex items-center'
+                  : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 flex items-center'
               }
               end // This makes sure that the NavLink is only active when the exact path matches
             >
-              Home
+              <FaHome className="mr-1" /> Home
             </NavLink>
 
             <NavLink
               to="/dashboard/about"
               className={({ isActive }) =>
                 isActive
-                  ? 'text-blue-600 font-semibold'
-                  : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200'
+                  ? 'text-blue-600 font-semibold flex items-center'
+                  : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 flex items-center'
               }
-              end // Add 'end' to ensure exact matching
+              end
             >
-              About
+              <FaInfoCircle className="mr-1" /> About
             </NavLink>
 
             <NavLink
               to="/contact"
               className={({ isActive }) =>
                 isActive
-                  ? 'text-blue-600 font-semibold'
-                  : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200'
+                  ? 'text-blue-600 font-semibold flex items-center'
+                  : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 flex items-center'
               }
-              end // Add 'end' to ensure exact matching
+              end
             >
-              Contact
+              <FaEnvelope className="mr-1" /> Contact
             </NavLink>
 
             <button
               onClick={handleLogout}
-              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-200"
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-200 flex items-center"
             >
-              Logout
+              <FaSignOutAlt className="mr-2" /> Logout
             </button>
           </div>
         </div>
@@ -96,44 +97,46 @@ const Navbar = () => {
               to="/dashboard"
               className={({ isActive }) =>
                 isActive
-                  ? 'block text-blue-600 font-semibold py-2'
-                  : 'block text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors duration-200'
+                  ? 'block text-blue-600 font-semibold py-2 flex items-center'
+                  : 'block text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors duration-200 flex items-center'
               }
               onClick={toggleMenu}
-              end // Add 'end' for exact matching
+              end
             >
-              Home
+              <FaHome className="mr-1" /> Home
             </NavLink>
+
             <NavLink
               to="/dashboard/about"
               className={({ isActive }) =>
                 isActive
-                  ? 'block text-blue-600 font-semibold py-2'
-                  : 'block text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors duration-200'
+                  ? 'block text-blue-600 font-semibold py-2 flex items-center'
+                  : 'block text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors duration-200 flex items-center'
               }
               onClick={toggleMenu}
-              end // Add 'end' for exact matching
+              end
             >
-              About
+              <FaInfoCircle className="mr-1" /> About
             </NavLink>
+
             <NavLink
               to="/contact"
               className={({ isActive }) =>
                 isActive
-                  ? 'block text-blue-600 font-semibold py-2'
-                  : 'block text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors duration-200'
+                  ? 'block text-blue-600 font-semibold py-2 flex items-center'
+                  : 'block text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors duration-200 flex items-center'
               }
               onClick={toggleMenu}
-              end // Add 'end' for exact matching
+              end
             >
-              Contact
+              <FaEnvelope className="mr-1" /> Contact
             </NavLink>
 
             <button
               onClick={handleLogout}
-              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-200 block text-center mt-4"
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-200 block text-center mt-4 flex items-center justify-center"
             >
-              Logout
+              <FaSignOutAlt className="mr-2" /> Logout
             </button>
           </div>
         </div>
