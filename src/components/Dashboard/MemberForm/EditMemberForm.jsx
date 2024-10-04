@@ -74,7 +74,7 @@ const EditMemberForm = () => {
       });
 
       // Redirect to member list or another page after update
-      navigate("/dashboard/upload/ecnmembers"); // Adjust the path according to your routing
+      navigate("/dashboard/upload/ecnmember"); // Adjust the path according to your routing
     } catch (error) {
       // Show error alert
       Swal.fire({
