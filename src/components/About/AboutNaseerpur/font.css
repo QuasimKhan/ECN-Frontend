@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Jameel Noori Nastaliq';
+    src: url('/fonts/jameel-noori-nastaliq.ttf') format('truetype'),
+         url('/fonts/jameel-noori-nastaliq-kasheeda.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  .font-jameel {
+    font-family: 'Jameel Noori Nastaliq', serif;
+  }
+  
