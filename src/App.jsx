@@ -1,6 +1,6 @@
 import "./App.css";
 import NavBar from "./components/Navbar/NavBar";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./components/Home/Home";
 import StudyMaterials from "./components/StudyMaterials/StudyMaterials";
 import Books from "./components/Books/Books";
@@ -20,6 +20,7 @@ import ProtectedRoute from "./components/Dashboard/ProtectedRoute";
 import Login from "./pages/Login";
 import { AuthProvider } from "./context/auth";
 
+// Move useLocation inside the BrowserRouter
 function App() {
   return (
     <AuthProvider>
@@ -37,7 +38,6 @@ function App() {
           <link rel="canonical" href="https://ecnaseerpur.in" />
           <meta name="robots" content="index,follow" />
           <meta name="author" content="Quasim Khan, ECN" />
-
           {/* Open Graph / Facebook */}
           <meta property="og:type" content="website" />
           <meta property="og:title" content="Educational Committee of Naseerpur - ECN" />
@@ -50,7 +50,6 @@ function App() {
             content="https://ecnaseerpur.in/assets/logo-CCgY3ykc.png"
           />
           <meta property="og:url" content="https://ecnaseerpur.in" />
-
           {/* Twitter */}
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content="Educational Committee of Naseerpur - ECN" />
@@ -64,44 +63,59 @@ function App() {
           />
         </Helmet>
 
-        <NavBar /> {/* Public NavBar shown on all pages except login */}
-        
+        {/* Move useLocation here */}
+        <ContentWrapper />
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
 
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/studymaterials" element={<StudyMaterials />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/books/quran" element={<Quran />} />
-          <Route path="/notices" element={<Notices />} />
-          <Route path="/gallery" element={<GalleryWithTab />} />
-          <Route path="/gallery/:page" element={<GalleryWithTab />} />
-          <Route path="/about/aboutecn" element={<AboutECN />} />
-          <Route path="/about/arkaane-shura" element={<ArkaaneShura />} />
-          <Route path="/about/about-naseerpur" element={<AboutNaseerpur />} />
-          <Route path="/about/arkaane-shura/:profileName" element={<ProfileView profileData={profileData} />} />
-          <Route path="/login" element={<Login />} />
+// New component to handle content based on location
+function ContentWrapper() {
+  const location = useLocation();
 
-          
-        </Routes>
+  // Check if the current path is a protected route (e.g., `/dashboard`)
+  const isProtectedRoute = location.pathname.startsWith("/dashboard");
 
-        <Footer /> {/* Public Footer */}
+  return (
+    <>
+      {/* Conditionally render NavBar and Footer based on the route */}
+      {!isProtectedRoute && <NavBar />}
+      
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/studymaterials" element={<StudyMaterials />} />
+        <Route path="/books" element={<Books />} />
+        <Route path="/books/quran" element={<Quran />} />
+        <Route path="/notices" element={<Notices />} />
+        <Route path="/gallery" element={<GalleryWithTab />} />
+        <Route path="/gallery/:page" element={<GalleryWithTab />} />
+        <Route path="/about/aboutecn" element={<AboutECN />} />
+        <Route path="/about/arkaan-e-shura" element={<ArkaaneShura />} />
+        <Route path="/about/about-naseerpur" element={<AboutNaseerpur />} />
+        <Route path="/about/arkaane-shura/:profileName" element={<ProfileView profileData={profileData} />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
 
-        <Routes>
-          {/* Protected Route for Dashboard */}
-          <Route path="/dashboard" element={
+      {!isProtectedRoute && <Footer />} {/* Render Footer conditionally */}
+
+      <Routes>
+        {/* Protected Route for Dashboard */}
+        <Route
+          path="/dashboard"
+          element={
             <ProtectedRoute>
               <Layout>
                 <Dashboard />
               </Layout>
             </ProtectedRoute>
-          } />
-
-          {/* Catch-all Route */}
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+          }
+        />
+        {/* Catch-all Route */}
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </>
   );
 }
 
