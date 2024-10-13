@@ -94,12 +94,7 @@ const EditMemberForm = () => {
         text: response.data.message,
       });
 
-<<<<<<< HEAD
       navigate("/dashboard/upload/ecnmember");
-=======
-      // Redirect to member list or another page after update
-      navigate("/dashboard/upload/ecnmember"); // Adjust the path according to your routing
->>>>>>> ae0c3af1e94448425c3314b033d7ffbc124e577e
     } catch (error) {
       Swal.fire({
         icon: "error",
