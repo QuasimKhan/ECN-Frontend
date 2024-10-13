@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import { FaAsterisk } from "react-icons/fa"; // Import required icon
-import Swal from "sweetalert2"; // Import SweetAlert2
-import "sweetalert2/dist/sweetalert2.min.css"; // Optional: SweetAlert2 default styling
+import { FaAsterisk } from "react-icons/fa";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 import Loader from "../../../utils/Loader"; // Import your loader component
 
 const AddMemberForm = () => {
@@ -15,7 +15,7 @@ const AddMemberForm = () => {
     email: "",
     joiningDate: "",
     status: "Active",
-    role: "member",
+    role: "ECN Member", // Set default role to "ECN Member"
     profileImage: null,
   });
 
@@ -39,19 +39,23 @@ const AddMemberForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataToSubmit = new FormData();
-
-    // Append all fields to FormData
-    for (const key in formData) {
-      formDataToSubmit.append(key, formData[key]);
-    }
-
-    // Add default image from public directory if no profile image is uploaded
+  
+    // If profileImage is null, use a default image URL
     if (!formData.profileImage) {
-      formDataToSubmit.append("profileImage", "default-profile.png");
+      formDataToSubmit.append("profileImageUrl", "https://cdn-icons-png.flaticon.com/512/149/149071.png");
+    } else {
+      formDataToSubmit.append("profileImage", formData.profileImage);
     }
-
-    setLoading(true); // Set loading state to true
-
+  
+    // Append all other fields to FormData
+    for (const key in formData) {
+      if (key !== "profileImage") {
+        formDataToSubmit.append(key, formData[key]);
+      }
+    }
+  
+    setLoading(true);
+  
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API}/api/v1/ecnmembers/addmember`,
@@ -62,15 +66,13 @@ const AddMemberForm = () => {
           },
         }
       );
-
-      // Show success alert
+  
       Swal.fire({
         icon: "success",
         title: "Member Added!",
         text: "The member was added successfully.",
       });
-
-      // Reset the form after successful submission
+  
       setFormData({
         name: "",
         fatherName: "",
@@ -80,24 +82,22 @@ const AddMemberForm = () => {
         email: "",
         joiningDate: "",
         status: "Active",
-        role: "member",
+        role: "ECN Member",
         profileImage: null,
       });
-
-      // Reset file input
-      fileInputRef.current.value = ""; // Clear file input
+  
+      fileInputRef.current.value = "";
     } catch (error) {
-      // Show error alert with specific message if available
-      const errorMessage = error.response?.data?.message || "There was an error submitting the form. Please try again.";
       Swal.fire({
         icon: "error",
         title: "Submission Failed",
-        text: errorMessage,
+        text: error.response?.data?.message || "There was an error submitting the form.",
       });
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
+  
 
   const createImagePreview = () => {
     if (formData.profileImage) {
@@ -125,11 +125,11 @@ const AddMemberForm = () => {
             />
             <input
               type="file"
-              name="profileImage" // Change to match the formData key
+              name="profileImage"
               accept="image/*"
               onChange={handleFileChange}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              ref={fileInputRef} // Set ref for file input
+              ref={fileInputRef}
             />
           </div>
           <div className="flex-grow">
@@ -245,13 +245,14 @@ const AddMemberForm = () => {
         {/* Status */}
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Status
+            Status <span className="text-red-500"><FaAsterisk /></span>
           </label>
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
             className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
+            required
           >
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
@@ -261,13 +262,14 @@ const AddMemberForm = () => {
         {/* Role */}
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Role
+            Role <span className="text-red-500"><FaAsterisk /></span>
           </label>
           <select
             name="role"
             value={formData.role}
             onChange={handleChange}
             className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
+            required
           >
             <option value="ECN Member">ECN Member</option>
             <option value="Member of Majils-e-Shura">Member of Majils-e-Shura</option>
@@ -278,7 +280,7 @@ const AddMemberForm = () => {
         <div>
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold p-3 rounded-lg transition-all"
+            className="w-full py-3 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all"
             disabled={loading}
           >
             {loading ? "Submitting..." : "Add Member"}
