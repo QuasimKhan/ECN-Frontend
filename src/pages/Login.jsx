@@ -6,13 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 import Cookies from 'js-cookie'; // Import js-cookie
 import { useLocation } from 'react-router-dom';
+import Loader from '../utils/Loader'; // Assuming you have a Loader component
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { auth, setAuth } = useAuth();
+  const [loading, setLoading] = useState(false); // State for handling loading
   const navigate = useNavigate();
-
   const location = useLocation();
 
   // Redirect if already logged in
@@ -25,6 +26,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
+    setLoading(true); // Start loader
     try {
       const res = await axios.post(`${import.meta.env.VITE_APP_API}/api/v1/auth/login`, {
         email,
@@ -48,6 +50,8 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || error.message); // Enhanced error handling
+    } finally {
+      setLoading(false); // Stop loader
     }
   };
 
@@ -83,9 +87,12 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200"
+              className={`w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 flex items-center justify-center ${
+                loading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              disabled={loading} // Disable button when loading
             >
-              Login
+              {loading ? "Logging..." : 'Login'}
             </button>
           </form>
         </div>

@@ -19,6 +19,7 @@ const EditMemberForm = () => {
     joiningDate: "",
     status: "Active",
     role: "member",
+    profileImage: null, // Add profileImage state
   });
 
   // Fetch member data when component loads
@@ -28,14 +29,12 @@ const EditMemberForm = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_APP_API}/api/v1/ecnmembers/${id}` // Use GET method here
         );
-        // console.log(response.data.data);
-        // Extract date parts from the response
-      const memberData = {
-        ...response.data.data,
-        dob: response.data.data.dob.substring(0, 10), // Extracting the date part
-        joiningDate: response.data.data.joiningDate.substring(0, 10), // Extracting the date part
-      };
-        
+        const memberData = {
+          ...response.data.data,
+          dob: response.data.data.dob.substring(0, 10), // Extracting the date part
+          joiningDate: response.data.data.joiningDate.substring(0, 10), // Extracting the date part
+        };
+
         setFormData(memberData); // Set the form data to the fetched member data
       } catch (error) {
         Swal.fire({
@@ -51,36 +50,56 @@ const EditMemberForm = () => {
 
   // Handle input change
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value, files } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: name === "profileImage" ? files[0] : value, // Handle file input
+    }));
   };
 
   // Handle form submission for updating member data
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Create FormData object
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("fatherName", formData.fatherName);
+      data.append("dob", formData.dob);
+      data.append("employmentType", formData.employmentType);
+      data.append("address", formData.address);
+      data.append("phone", formData.phone);
+      data.append("email", formData.email);
+      data.append("joiningDate", formData.joiningDate);
+      data.append("status", formData.status);
+      data.append("role", formData.role);
+
+      if (formData.profileImage) {
+        data.append("profileImage", formData.profileImage);
+      }
+
       const response = await axios.put(
-        `${import.meta.env.VITE_APP_API}/api/v1/ecnmembers/edit/${id}`,
-        formData
+        `${import.meta.env.VITE_APP_API}/api/v1/ecnmembers/edit/${id}`, // Use PUT method here
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
-      // Show success alert
       Swal.fire({
         icon: "success",
-        title: "Member Updated!",
-        text: "The member details were updated successfully.",
+        title: "Member Updated",
+        text: response.data.message,
       });
 
-      // Redirect to member list or another page after update
-      navigate("/dashboard/upload/ecnmembers"); // Adjust the path according to your routing
+      navigate("/dashboard/upload/ecnmember");
     } catch (error) {
-      // Show error alert
       Swal.fire({
         icon: "error",
-        title: "Update Failed",
-        text: error.response?.data?.message || "There was an error updating the member. Please try again.",
+        title: "Error",
+        text: error.response?.data?.message || "Failed to update member data.",
       });
     }
   };
@@ -221,6 +240,20 @@ const EditMemberForm = () => {
           />
         </div>
 
+        {/* Profile Image */}
+        <div>
+          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            Profile Image (Optional)
+          </label>
+          <input
+            type="file"
+            name="profileImage"
+            accept="image/*"
+            onChange={handleChange}
+            className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
+          />
+        </div>
+
         {/* Status */}
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -241,7 +274,7 @@ const EditMemberForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-all duration-300"
+          className="w-full py-3 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:bg-blue-700 focus:outline-none transition-all"
         >
           Update Member
         </button>

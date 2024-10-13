@@ -8,29 +8,29 @@ const Dashboard = () => {
   const { auth } = useAuth();
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_APP_API}/api/v1/auth/user`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.token}`,
-            },
-          }
-        );
-        setUser(res.data.user);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUser();
-  }, [auth.token]); // Adding dependency array to avoid infinite loop
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `${import.meta.env.VITE_APP_API}/api/v1/auth/user`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${auth.token}`,
+  //           },
+  //         }
+  //       );
+  //       setUser(res.data.user);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchUser();
+  // }, [auth.token]); // Adding dependency array to avoid infinite loop
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
       <h1 className="text-4xl font-extrabold text-gray-800 dark:text-white mb-12">
-        Welcome{user ? `, ${user.name}` : ""} to the ECN Dashboard{" "}
+        Welcome to the ECN Dashboard{" "}
         {/* Display user name */}
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl">

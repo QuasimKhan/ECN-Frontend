@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import { FaAsterisk } from "react-icons/fa"; // Import required icon
 import Swal from "sweetalert2"; // Import SweetAlert2
 import "sweetalert2/dist/sweetalert2.min.css"; // Optional: SweetAlert2 default styling
+import Loader from "../../../utils/Loader"; // Import your loader component
 
 const AddMemberForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     fatherName: "",
     dob: "",
-    employmentType: "",
     address: "",
     phone: "",
     email: "",
     joiningDate: "",
     status: "Active",
     role: "member",
+    profileImage: null,
   });
+
+  const [loading, setLoading] = useState(false); // Loading state
+  const fileInputRef = useRef(null); // Ref for file input
 
   const handleChange = (e) => {
     setFormData({
@@ -25,14 +29,40 @@ const AddMemberForm = () => {
     });
   };
 
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      profileImage: e.target.files[0],
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formDataToSubmit = new FormData();
+
+    // Append all fields to FormData
+    for (const key in formData) {
+      formDataToSubmit.append(key, formData[key]);
+    }
+
+    // Add default image from public directory if no profile image is uploaded
+    if (!formData.profileImage) {
+      formDataToSubmit.append("profileImage", "default-profile.png");
+    }
+
+    setLoading(true); // Set loading state to true
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API}/api/v1/ecnmembers/addmember`,
-        formData
+        formDataToSubmit,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      
+
       // Show success alert
       Swal.fire({
         icon: "success",
@@ -45,22 +75,35 @@ const AddMemberForm = () => {
         name: "",
         fatherName: "",
         dob: "",
-        employmentType: "",
         address: "",
         phone: "",
         email: "",
         joiningDate: "",
         status: "Active",
         role: "member",
+        profileImage: null,
       });
+
+      // Reset file input
+      fileInputRef.current.value = ""; // Clear file input
     } catch (error) {
-      // Show error alert
+      // Show error alert with specific message if available
+      const errorMessage = error.response?.data?.message || "There was an error submitting the form. Please try again.";
       Swal.fire({
         icon: "error",
         title: "Submission Failed",
-        text: "There was an error submitting the form. Please try again.",
+        text: errorMessage,
       });
+    } finally {
+      setLoading(false); // Reset loading state
     }
+  };
+
+  const createImagePreview = () => {
+    if (formData.profileImage) {
+      return URL.createObjectURL(formData.profileImage);
+    }
+    return "/ProfileImg/dummyProfile.png"; // Default image path in the public directory
   };
 
   return (
@@ -69,21 +112,40 @@ const AddMemberForm = () => {
         Add New Member
       </h2>
 
+      {loading && <Loader />} {/* Show loader when loading is true */}
+
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Name Field */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Name <span className="text-red-500"><FaAsterisk /></span>
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
-            placeholder="Enter member's name"
-            required
-          />
+        {/* Profile Image Upload */}
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <img
+              src={createImagePreview()}
+              alt="Profile"
+              className="w-24 h-24 rounded-full border-2 border-gray-300 dark:border-gray-600 object-cover"
+            />
+            <input
+              type="file"
+              name="profileImage" // Change to match the formData key
+              accept="image/*"
+              onChange={handleFileChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              ref={fileInputRef} // Set ref for file input
+            />
+          </div>
+          <div className="flex-grow">
+            <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+              Name <span className="text-red-500"><FaAsterisk /></span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
+              placeholder="Enter member's name"
+              required
+            />
+          </div>
         </div>
 
         {/* Father's Name */}
@@ -115,25 +177,6 @@ const AddMemberForm = () => {
             className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
             required
           />
-        </div>
-
-        {/* Employment Type */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Employment Type <span className="text-red-500"><FaAsterisk /></span>
-          </label>
-          <select
-            name="employmentType"
-            value={formData.employmentType}
-            onChange={handleChange}
-            className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
-            required
-          >
-            <option value="">Select Employment Type</option>
-            <option value="Full-time">Full-time</option>
-            <option value="Part-time">Part-time</option>
-            <option value="Contract">Contract</option>
-          </select>
         </div>
 
         {/* Address */}
@@ -202,14 +245,13 @@ const AddMemberForm = () => {
         {/* Status */}
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Status <span className="text-red-500"><FaAsterisk /></span>
+            Status
           </label>
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
             className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
-            required
           >
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
@@ -219,26 +261,29 @@ const AddMemberForm = () => {
         {/* Role */}
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Role <span className="text-red-500"><FaAsterisk /></span>
+            Role
           </label>
           <select
             name="role"
             value={formData.role}
             onChange={handleChange}
             className="block w-full p-3 border rounded-md border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all"
-            required
           >
-            <option value="member">Member</option>
-            <option value="admin">Admin</option>
+            <option value="ECN Member">ECN Member</option>
+            <option value="Member of Majils-e-Shura">Member of Majils-e-Shura</option>
           </select>
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-3 px-6 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-all"
-        >
-          Add Member
-        </button>
+        {/* Submit Button */}
+        <div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold p-3 rounded-lg transition-all"
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Add Member"}
+          </button>
+        </div>
       </form>
     </div>
   );

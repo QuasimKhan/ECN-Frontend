@@ -8,7 +8,14 @@ import {
   Button,
 } from "@material-tailwind/react";
 import FadeIn from '../../../FadeIn';
-export function ProfileCard({ imgSrc, name, title, onButtonClick }) {
+export function ProfileCard({ imgSrc, name, title, onButtonClick, joiningDate }) {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
   return (
     <FadeIn>
     <Card className="w-full sm:w-72 md:w-80 dark:bg-gray-900 dark:text-gray-100">
@@ -26,6 +33,7 @@ export function ProfileCard({ imgSrc, name, title, onButtonClick }) {
         <Typography color="blue-gray" className="font-medium text-blue-600 dark:text-blue-100" textGradient>
           {title}
         </Typography>
+        <Typography className="dark:text-gray-100 mb-1">Joining Date : {formatDate(joiningDate)}</Typography>
       </CardBody>
       <CardFooter className="flex flex-col items-center gap-2 pt-2 dark:text-gray-100">
         <Button onClick={onButtonClick} color="blue" size="sm">

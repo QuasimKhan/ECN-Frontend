@@ -126,6 +126,15 @@ export default function Navigation() {
                     </li>
                     <li>
                       <Link
+                        to="/About/Members"
+                        className="block px-4 py-2 text-white hover:bg-gray-700"
+                        onClick={handleLinkClick}
+                      >
+                        Members
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
                         to="/About/About-Naseerpur"
                         className="block px-4 py-2 text-white hover:bg-gray-700"
                         onClick={handleLinkClick}

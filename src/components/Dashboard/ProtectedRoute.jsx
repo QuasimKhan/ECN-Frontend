@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
+import Loader from '../../utils/Loader';
 
 const ProtectedRoute = ({ children }) => {
   const { auth, loading } = useAuth();
@@ -10,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="loader" /> {/* Replace with a Tailwind spinner, if desired */}
-        Loading...
+        <Loader />
       </div>
     );
   }

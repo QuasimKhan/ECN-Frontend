@@ -21,6 +21,7 @@ import Login from "./pages/Login";
 import { AuthProvider } from "./context/auth";
 import ECNmember from "./pages/ECNmember";
 import EditMemberForm from "./components/Dashboard/MemberForm/EditMemberForm";
+import Members from "./components/About/Members/Members";
 
 // Move useLocation inside the BrowserRouter
 function App() {
@@ -95,6 +96,7 @@ function ContentWrapper() {
         <Route path="/gallery/:page" element={<GalleryWithTab />} />
         <Route path="/about/aboutecn" element={<AboutECN />} />
         <Route path="/about/arkaan-e-shura" element={<ArkaaneShura />} />
+        <Route path="/about/members" element={<Members />} />
         <Route path="/about/about-naseerpur" element={<AboutNaseerpur />} />
         <Route path="/about/arkaan-e-shura/:profileName" element={<ProfileView profileData={profileData} />} />
         <Route path="/login" element={<Login />} />
