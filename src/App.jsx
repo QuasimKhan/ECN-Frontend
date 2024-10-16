@@ -3,7 +3,6 @@ import NavBar from "./components/Navbar/NavBar";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./components/Home/Home";
 import StudyMaterials from "./components/StudyMaterials/StudyMaterials";
-import Books from "./components/Books/Books";
 import Footer from "./components/Footer/Footer";
 import Notices from "./components/Notices/Notices";
 import { GalleryWithTab } from "./components/Gallery/Gallery";
@@ -22,6 +21,7 @@ import { AuthProvider } from "./context/auth";
 import ECNmember from "./pages/ECNmember";
 import EditMemberForm from "./components/Dashboard/MemberForm/EditMemberForm";
 import Members from "./components/About/Members/Members";
+import BookPage from "./pages/BookPage";
 
 // Move useLocation inside the BrowserRouter
 function App() {
@@ -89,7 +89,6 @@ function ContentWrapper() {
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/studymaterials" element={<StudyMaterials />} />
-        <Route path="/books" element={<Books />} />
         <Route path="/books/quran" element={<Quran />} />
         <Route path="/notices" element={<Notices />} />
         <Route path="/gallery" element={<GalleryWithTab />} />
@@ -110,6 +109,7 @@ function ContentWrapper() {
                 <Routes>
                   <Route path="" element={<Dashboard />} />
                   <Route path="upload/ecnmember" element={<ECNmember />} />
+                  <Route path="upload/books" element={<BookPage />} />
                   <Route path="ecnmembers/edit/:id" element={<EditMemberForm />} />
                   <Route path="*" element={<PageNotFound />} />
                 </Routes>

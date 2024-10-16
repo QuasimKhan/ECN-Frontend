@@ -48,13 +48,13 @@ const Dashboard = () => {
 
         {/* Islamic Books Section */}
         <Link
-          to="/dashboard/upload/islamicbooks"
+          to="/dashboard/upload/books"
           className="flex flex-col items-center justify-center h-56 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
         >
           <FaBook className="text-blue-600 dark:text-blue-400 text-5xl mb-4" />{" "}
           {/* Icon */}
           <span className="text-2xl font-semibold text-gray-800 dark:text-white">
-            Islamic Books
+           Books
           </span>
         </Link>
 
