@@ -3,21 +3,21 @@ import axios from "axios";
 import Loader from "../../../utils/Loader"; // Import your Loader component
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const AddBooks = () => {
+const AddBooks = ({ onAddBook, setLoading, setError }) => {
     // State for form fields
     const [bookData, setBookData] = useState({
         title: "",
         author: "",
-        category: ['Islamic', 'General', 'Quran', 'Hadith'], // Default category
+        category: "Islamic", // Default category
         pdfLink: "",
     });
 
     // State for files
     const [coverImage, setCoverImage] = useState(null);
+    const [coverImagePreview, setCoverImagePreview] = useState(null);
     const [pdfFile, setPdfFile] = useState(null);
 
     // State for loading and progress
-    const [loading, setLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
 
     // Handle input change for text fields
@@ -28,7 +28,9 @@ const AddBooks = () => {
     // Handle file input for cover image and PDF
     const handleFileChange = (e) => {
         if (e.target.name === "coverImage") {
-            setCoverImage(e.target.files[0]);
+            const file = e.target.files[0];
+            setCoverImage(file);
+            setCoverImagePreview(URL.createObjectURL(file)); // Create preview URL
         } else if (e.target.name === "pdfFile") {
             setPdfFile(e.target.files[0]);
         }
@@ -38,9 +40,8 @@ const AddBooks = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true); // Set loading state to true
-        setUploadProgress(0); // Reset progress
+        setUploadProgress(0); // Reset upload progress
 
-        // Create FormData to send files and other data
         const formData = new FormData();
         formData.append("title", bookData.title);
         formData.append("author", bookData.author);
@@ -50,19 +51,17 @@ const AddBooks = () => {
         formData.append("pdfFile", pdfFile);
 
         try {
-            // Post the form data to the backend with progress tracking
-            await axios.post(`${import.meta.env.VITE_APP_API}/api/v1/books/addbook`, formData, {
+            const response = await axios.post(`${import.meta.env.VITE_APP_API}/api/v1/books/addbook`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
                 onUploadProgress: (progressEvent) => {
                     const { loaded, total } = progressEvent;
                     const percentage = Math.round((loaded * 100) / total);
-                    setUploadProgress(percentage); // Update the progress state
+                    setUploadProgress(percentage);
                 },
             });
 
-            // Show success alert
             Swal.fire({
                 title: 'Success!',
                 text: 'Book added successfully!',
@@ -70,19 +69,22 @@ const AddBooks = () => {
                 confirmButtonText: 'OK',
             });
 
-            // Clear form after successful submission
+            onAddBook(response.data); // Assuming the API response contains the new book data
+
+            // Reset form fields
             setBookData({
                 title: "",
                 author: "",
-                category: "Islamic", // Reset to default category
+                category: "Islamic",
                 pdfLink: "",
             });
             setCoverImage(null);
+            setCoverImagePreview(null);
             setPdfFile(null);
-            setUploadProgress(0); // Reset progress after submission
+            setUploadProgress(0);
         } catch (error) {
             console.error("Error adding the book:", error);
-            // Show error alert
+            setError(error); // Set error state for the parent component
             Swal.fire({
                 title: 'Error!',
                 text: 'There was an error adding the book.',
@@ -90,14 +92,24 @@ const AddBooks = () => {
                 confirmButtonText: 'OK',
             });
         } finally {
-            setLoading(false); // Set loading state back to false
+            setLoading(false); // Reset loading state
+            // Optionally reset upload progress here if needed
         }
+
+        // Reset form fields
+        e.target.reset();
     };
 
     return (
-        <div className="max-w-md mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 mt-8 transition-all duration-300 ease-in-out">
+        <div className="relative max-w-md mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 mt-8 transition-all duration-300 ease-in-out">
             <h2 className="text-2xl font-bold text-center mb-4 text-gray-900 dark:text-white">Add a New Book</h2>
-            {loading && <Loader />} {/* Show loader when loading */}
+            
+            {uploadProgress > 0 && (
+                <div className="absolute inset-0 flex items-center justify-center bg-transparent z-50">
+                    <Loader />
+                </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Title */}
                 <div>
@@ -153,7 +165,7 @@ const AddBooks = () => {
                     />
                 </div>
 
-                {/* Cover Image */}
+                {/* Cover Image Upload */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Cover Image</label>
                     <input
@@ -162,11 +174,21 @@ const AddBooks = () => {
                         accept="image/*"
                         onChange={handleFileChange}
                         required
-                        className="mt-1 block w-full text-sm text-gray-500 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100 dark:file:bg-gray-600 dark:file:text-blue-500 dark:hover:file:bg-gray-500"
+                        className="mt-1 block w-full text-sm text-gray-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-md file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-violet-50 file:text-violet-700
+                        hover:file:bg-violet-100 dark:bg-gray-700 dark:text-white dark:border-gray-600"
                     />
+                    {coverImagePreview && (
+                        <div className="mt-2">
+                            <img src={coverImagePreview} alt="Cover Preview" className="h-32 object-cover rounded-md" />
+                        </div>
+                    )}
                 </div>
 
-                {/* PDF File */}
+                {/* PDF File Upload */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">PDF File</label>
                     <input
@@ -175,34 +197,46 @@ const AddBooks = () => {
                         accept="application/pdf"
                         onChange={handleFileChange}
                         required
-                        className="mt-1 block w-full text-sm text-gray-500 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100 dark:file:bg-gray-600 dark:file:text-blue-500 dark:hover:file:bg-gray-500"
+                        className="mt-1 block w-full text-sm text-gray-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-md file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-violet-50 file:text-violet-700
+                        hover:file:bg-violet-100 dark:bg-gray-700 dark:text-white dark:border-gray-600"
                     />
                 </div>
 
                 {/* Progress Bar */}
-                {loading && (
-                    <div className="mt-4">
-                        <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                            <div
-                                className="bg-blue-600 h-2.5 rounded-full"
-                                style={{ width: `${uploadProgress}%` }}
-                            />
+                {uploadProgress > 0 && (
+                    <div className="relative pt-1">
+                        <div className="flex mb-2 items-center justify-between">
+                            <div>
+                                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-teal-600 bg-teal-200">
+                                    Uploading...
+                                </span>
+                            </div>
+                            <div className="text-right">
+                                <span className="text-xs font-semibold inline-block text-teal-600">
+                                    {uploadProgress}%
+                                </span>
+                            </div>
                         </div>
-                        <div className="text-center text-sm text-gray-600 dark:text-gray-300 mt-1">{uploadProgress}%</div>
+                        <div className="flex h-2 mb-4 overflow-hidden text-xs bg-gray-200 rounded">
+                            <div
+                                style={{ width: `${uploadProgress}%` }}
+                                className="flex flex-col text-center text-white bg-teal-600 shadow-none transition-all duration-500 ease-in-out"
+                            ></div>
+                        </div>
                     </div>
                 )}
 
                 {/* Submit Button */}
-                {!loading && (
-                    <div>
-                        <button
-                            type="submit"
-                            className="w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-400"
-                        >
-                            Add Book
-                        </button>
-                    </div>
-                )}
+                <button
+                    type="submit"
+                    className="w-full bg-indigo-600 text-white font-bold py-2 rounded hover:bg-indigo-700 transition duration-200"
+                >
+                    Add Book
+                </button>
             </form>
         </div>
     );
