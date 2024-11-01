@@ -8,7 +8,7 @@ export const profileData = [
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
     name: "Quasim Khan",
-    title: "President (Ameer)",
+    title: "President",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/quasim-khan", // Route to navigate to
     description: "Born on December 5, 2002 in Naseerpur, Azamgarh. Mr. Quasim Khan graduated in computer application. Earlier, he was the Vice President of ECN from 2021 to 2024. He is a member of the ECN Advisory Council."
@@ -19,7 +19,7 @@ export const profileData = [
     title: "Vice President",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/ariz-danish", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -27,7 +27,7 @@ export const profileData = [
     title: "Khazin",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/obaid-ur-rahman", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -35,7 +35,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/ariz-anees", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -43,7 +43,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/hassan-khan", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -51,7 +51,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/aatif-asif", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -59,7 +59,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/saquib-tarique", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -67,7 +67,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/mohammad-yusuf-khalid", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -75,7 +75,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/abu-huzaifa-falahi", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -83,7 +83,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/mohammad-aazim-falahi", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -91,7 +91,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/hafiz-aziz-ur-rahman", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   },
   {
     imgSrc: "/ProfileImg/dummyProfile.png",
@@ -99,7 +99,7 @@ export const profileData = [
     title: "Member of Shura",
     joiningDate: "2024-07-21",
     link: "/About/Arkaan-e-Shura/mohammad-modassir", // Route to navigate to
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.kjsdhfjkhsakdghjkashgdjk skdjghjksdhagkj hk aksjdghjksdhg kjshdg jkasdghjhjksgdh sadjkghjkasdgh jskdgjksahdgjkh kjh asjkdghkjasdhgkjh kjshdg kjashdgk kjshdg kjag"
+    description: "Not Available"
   }
   // Add more profiles here if needed
 ];
