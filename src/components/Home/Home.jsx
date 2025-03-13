@@ -77,6 +77,8 @@ const Home = () => {
         </div>
         <YouTubeGallery />
       </div>
+      <script async="async" data-cfasync="false" src="//pl26109344.effectiveratecpm.com/2a9d29707e80d69d9c88c809cb4300c7/invoke.js"></script>
+<div id="container-2a9d29707e80d69d9c88c809cb4300c7"></div>
     </>
   );
 };
